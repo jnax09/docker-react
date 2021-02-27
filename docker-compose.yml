@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  web:
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules # do not try to map a folder from the host against /app/node_modules inside the container
+      - .:/app
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules # do not try to map a folder from the host against /app/node_modules inside the container i.e avoid overriding
+      - .:/app
+    command: ["npm", "run", "test"]
